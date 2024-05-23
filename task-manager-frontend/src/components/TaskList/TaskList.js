@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ListItem, List, ListItemText } from "@mui/material";
-function TaskList() {
+
+function TaskList({ refresh }) {
+  console.log("refresh:" + refresh);
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [refresh]);
 
   const fetchTasks = async () => {
     try {

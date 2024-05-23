@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./TaskFormDialog.css";
 import { TextField, Button, Box, Typography } from "@mui/material";
 
-function TaskFormDialog({ open, onClose }) {
+function TaskFormDialog({ open, onClose, onCreated }) {
   const [task, setTask] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,6 +12,7 @@ function TaskFormDialog({ open, onClose }) {
     } else {
       console.log(task);
       postData();
+      onCreated();
       setTask("");
     }
   };

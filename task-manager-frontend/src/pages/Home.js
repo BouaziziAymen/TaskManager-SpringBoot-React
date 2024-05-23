@@ -5,6 +5,7 @@ import TaskList from "../components/TaskList/TaskList";
 
 function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [refreshTasks, setRefreshTasks] = useState(0);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -12,6 +13,12 @@ function Home() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
+
+  const handleTaskSubmit = () => {
+    setRefreshTasks((prev) => prev + 1);
+    setIsDialogOpen(false);
+  };
+
   return (
     <div>
       <Box sx={{ position: "absolute", top: 16, right: 16 }}>
@@ -19,8 +26,12 @@ function Home() {
           Add Task
         </Button>
       </Box>
-      <TaskFormDialog open={isDialogOpen} onClose={handleCloseDialog} />
-      <TaskList />
+      <TaskFormDialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        onCreated={handleTaskSubmit}
+      />
+      <TaskList refresh={refreshTasks} />
     </div>
   );
 }
