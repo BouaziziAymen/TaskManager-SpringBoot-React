@@ -1,12 +1,15 @@
 import "./App.css";
-import TaskForm from "./components/TaskForm";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Task Manager</h1>
-      <TaskForm />
-    </div>
+    <body>
+      {" "}
+      <div className="App">
+        <h1>Task Manager</h1>
+        <Home />
+      </div>
+    </body>
   );
 }
 
