@@ -1,11 +1,22 @@
 import axios from "axios";
-import { useState } from "react";
 import "./TaskFormDialog.css";
 import { TextField, Button, Box, Typography } from "@mui/material";
+import React, { useState } from "react";
 
-function TaskFormDialog({ open, onClose, onCreated }) {
-  const [task, setTask] = useState("");
-  const handleSubmit = (e) => {
+interface TaskFormDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onCreated: () => void;
+}
+
+function TaskFormDialog({
+  open,
+  onClose,
+  onCreated,
+}: TaskFormDialogProps): JSX.Element {
+  const [task, setTask] = useState<string>("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!task.trim()) {
       alert("Task cannot be empty!");
@@ -16,7 +27,8 @@ function TaskFormDialog({ open, onClose, onCreated }) {
       setTask("");
     }
   };
-  const handleChange = (e) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
   };
 
@@ -33,6 +45,7 @@ function TaskFormDialog({ open, onClose, onCreated }) {
         console.error(e); // Handle errors here
       });
   };
+
   return (
     <div className={`dialog ${open ? "open" : ""}`}>
       <div className="task-container">
@@ -81,7 +94,6 @@ function TaskFormDialog({ open, onClose, onCreated }) {
               variant="contained"
               className="submitButton"
               type="submit"
-              onSubmit={handleSubmit}
             >
               Submit
             </Button>
