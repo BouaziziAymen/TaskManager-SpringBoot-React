@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import "./App.css";
 import Home from "./pages/Home";
 
@@ -6,7 +7,12 @@ function App() {
     <body>
       {" "}
       <div className="App">
-        <h1>Task Manager</h1>
+        <Typography
+          variant="h5"
+          sx={{ marginBottom: "16px", color: "blue", margin: "5px" }}
+        >
+          Task Manager
+        </Typography>
         <Home />
       </div>
     </body>

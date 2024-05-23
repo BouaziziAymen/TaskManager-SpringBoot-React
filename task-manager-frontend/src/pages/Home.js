@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TaskFormDialog from "../components/TaskFormDialog/TaskFormDialog";
+import { Button } from "@mui/material";
 
 function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -12,7 +13,9 @@ function Home() {
   };
   return (
     <div>
-      <button onClick={handleOpenDialog}>Add Task</button>
+      <Button variant="outlined" color="primary" onClick={handleOpenDialog}>
+        Add Task
+      </Button>
       <TaskFormDialog open={isDialogOpen} onClose={handleCloseDialog} />
     </div>
   );

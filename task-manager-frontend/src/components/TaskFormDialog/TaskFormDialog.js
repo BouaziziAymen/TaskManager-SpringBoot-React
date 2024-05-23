@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import "./TaskFormDialog.css";
+import { TextField, Button, Box, Typography } from "@mui/material";
 
 function TaskFormDialog({ open, onClose }) {
   const [task, setTask] = useState("");
@@ -34,28 +35,56 @@ function TaskFormDialog({ open, onClose }) {
   return (
     <div className={`dialog ${open ? "open" : ""}`}>
       <div className="task-container">
-        <button className="closeButton" onClick={onClose}>
+        <Button
+          sx={{ position: "absolute", top: "0", right: "0", margin: "5px" }}
+          variant="contained"
+          color="secondary"
+          onClick={onClose}
+        >
           X
-        </button>
-        <h2>Add Task</h2>
+        </Button>
+        <Typography variant="h5" sx={{ marginBottom: "16px", color: "blue" }}>
+          Add Task
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="task">Task</label>
-          <input
-            className="nameInput"
-            type="text"
-            id="task"
-            name="task"
-            placeholder="Enter your task"
+          <TextField
             value={task}
             onChange={handleChange}
+            label="Task:"
+            variant="outlined"
+            sx={{
+              width: "300px",
+              marginBottom: "16px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "blue",
+                },
+                "&:hover fieldset": {
+                  borderColor: "green",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "purple",
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color: "blue",
+                "&.Mui-focused": {
+                  color: "purple",
+                },
+              },
+            }}
           />
-          <button
-            className="submitButton"
-            type="submit"
-            onSubmit={handleSubmit}
-          >
-            Submit
-          </button>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              sx={{ display: "block", width: "100px" }}
+              variant="contained"
+              className="submitButton"
+              type="submit"
+              onSubmit={handleSubmit}
+            >
+              Submit
+            </Button>
+          </Box>
         </form>
       </div>
     </div>

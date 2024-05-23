@@ -9,32 +9,6 @@
   border-radius: 10px;
 }
 
-label,
-.nameInput {
-  display: block;
-  width: 360px;
-  margin-bottom: 10px;
-  height: 30px;
-}
-
-.submitButton {
-  width: 200px;
-  cursor: pointer;
-  height: 30px;
-}
-
-.closeButton {
-  width: 50px; /* Adjust width as needed */
-  height: 50px; /* Adjust height as needed */
-  top: 0;
-  right: 0;
-  color: red;
-  position: absolute;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
 .dialog {
   display: none;
   position: fixed;
