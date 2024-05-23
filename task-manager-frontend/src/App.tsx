@@ -1,8 +1,9 @@
 import { Typography, Box } from "@mui/material";
 import "./App.css";
 import Home from "./pages/Home";
+import React from "react";
 
-function App() {
+function App(): JSX.Element {
   return (
     <body>
       {" "}

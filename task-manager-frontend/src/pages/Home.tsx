@@ -2,8 +2,9 @@ import { useState } from "react";
 import TaskFormDialog from "../components/TaskFormDialog/TaskFormDialog";
 import { Button, Box } from "@mui/material";
 import TaskList from "../components/TaskList/TaskList";
+import React from "react";
 
-function Home() {
+function Home(): JSX.Element {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [refreshTasks, setRefreshTasks] = useState(0);
 
