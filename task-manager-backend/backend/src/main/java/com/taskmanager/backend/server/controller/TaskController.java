@@ -18,6 +18,7 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("api/v1/taskmanager")
 @Slf4j
+@CrossOrigin
 public class TaskController {
 
     @Autowired
