@@ -1,7 +1,8 @@
 import axios from "axios";
 import "./TaskFormDialog.css";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { TaskContext } from "../../App";
 
 interface TaskFormDialogProps {
   open: boolean;
@@ -9,12 +10,13 @@ interface TaskFormDialogProps {
   onCreated: () => void;
 }
 
-function TaskFormDialog({
-  open,
-  onClose,
-  onCreated,
-}: TaskFormDialogProps): JSX.Element {
+function TaskFormDialog({ open, onClose }: TaskFormDialogProps): JSX.Element {
   const [task, setTask] = useState<string>("");
+  const context = useContext(TaskContext);
+  if (!context) {
+    throw new Error("This must be used within a TaskProvider");
+  }
+  const { addToList } = context;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +25,6 @@ function TaskFormDialog({
     } else {
       console.log(task);
       postData();
-      onCreated();
       setTask("");
     }
   };
@@ -38,6 +39,7 @@ function TaskFormDialog({
       .post(apiUrl, { name: task })
       .then((res) => {
         console.log(res.data);
+        addToList(res.data);
         onClose();
       })
       .catch((e) => {

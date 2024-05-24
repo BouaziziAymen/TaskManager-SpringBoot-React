@@ -6,7 +6,6 @@ import React from "react";
 
 function Home(): JSX.Element {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [refreshTasks, setRefreshTasks] = useState(0);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -16,7 +15,6 @@ function Home(): JSX.Element {
   };
 
   const handleTaskSubmit = () => {
-    setRefreshTasks((prev) => prev + 1);
     setIsDialogOpen(false);
   };
 
@@ -32,7 +30,7 @@ function Home(): JSX.Element {
         onClose={handleCloseDialog}
         onCreated={handleTaskSubmit}
       />
-      <TaskList refresh={refreshTasks} />
+      <TaskList />
     </div>
   );
 }

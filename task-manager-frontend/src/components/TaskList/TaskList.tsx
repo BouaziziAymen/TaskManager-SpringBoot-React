@@ -1,38 +1,34 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import axios from "axios";
-import { ListItem, List, ListItemText } from "@mui/material";
+import { ListItem, List, ListItemText, IconButton } from "@mui/material";
 import React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { TaskContext } from "../../App";
 
-interface Task {
-  id: number;
-  name: string;
-}
+function TaskList(): JSX.Element {
+  const context = useContext(TaskContext);
 
-interface TaskListProps {
-  refresh: Number;
-}
+  if (!context) {
+    throw new Error("This must be used within a TaskProvider");
+  }
+  const { tasks, removeFromList } = context;
 
-function TaskList({ refresh }: TaskListProps): JSX.Element {
-  console.log("refresh:" + refresh);
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  useEffect(() => {
-    fetchTasks();
-  }, [refresh]);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get<Task[]>(
-        "http://localhost:8080/api/v1/taskmanager"
-      );
-      setTasks(response.data);
-    } catch (error) {
-      console.error("Error fetching tasks:" + error);
-    }
+  const handleEditTask = (taskId: string) => {
+    console.log(`Task ${taskId} was to edit`);
   };
 
-  const handleTaskClick = (taskId: number) => {
-    console.log(`Task ${taskId} was clicked`);
+  const handleDeleteTask = (taskId: string) => {
+    console.log(`Task ${taskId} was to delete`);
+    axios
+      .delete(`http://localhost:8080/api/v1/taskmanager/${taskId}`)
+      .then((res) => {
+        console.log("done deleting:" + taskId);
+        removeFromList(taskId);
+      })
+      .catch((e) => {
+        console.error(e); // Handle errors here
+      });
   };
 
   return (
@@ -40,7 +36,6 @@ function TaskList({ refresh }: TaskListProps): JSX.Element {
       {tasks.map((task, index) => (
         <ListItem
           key={task.id}
-          onClick={() => handleTaskClick(task.id)}
           sx={{
             backgroundColor:
               index % 2 === 0 ? "white" : "rgba(173, 216, 230, 0.3)",
@@ -52,6 +47,25 @@ function TaskList({ refresh }: TaskListProps): JSX.Element {
           }}
         >
           <ListItemText primary={task.name} />
+          <div>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditTask(task.id);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              color="warning"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteTask(task.id);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
         </ListItem>
       ))}
     </List>
