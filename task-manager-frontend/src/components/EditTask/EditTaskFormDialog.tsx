@@ -1,7 +1,7 @@
 import axios from "axios";
 import "./EditTaskFormDialog.css";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Task } from "../../App";
 
 interface TaskFormDialogProps {
@@ -15,9 +15,13 @@ function EditTaskFormDialog({
   onClose,
   editTask,
 }: TaskFormDialogProps): JSX.Element {
+  console.log("editing task:" + editTask?.name);
   if (!editTask) {
     throw new Error("A task must be passed!");
   }
+  useEffect(() => {
+    setName(editTask.name);
+  }, [editTask.name]);
   const [name, setName] = useState<string>(editTask.name);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
