@@ -4,9 +4,13 @@ import { ListItem, List, ListItemText, IconButton } from "@mui/material";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { TaskContext } from "../../App";
+import { Task, TaskContext } from "../../App";
 
-function TaskList(): JSX.Element {
+interface TaskListProps {
+  onEditClicked: (task: Task) => void;
+}
+
+function TaskList({ onEditClicked }: TaskListProps): JSX.Element {
   const context = useContext(TaskContext);
 
   if (!context) {
@@ -14,8 +18,9 @@ function TaskList(): JSX.Element {
   }
   const { tasks, removeFromList } = context;
 
-  const handleEditTask = (taskId: string) => {
-    console.log(`Task ${taskId} was to edit`);
+  const handleEditTask = (task: Task) => {
+    console.log(`Task ${task.id} was to edit`);
+    onEditClicked(task);
   };
 
   const handleDeleteTask = (taskId: string) => {
@@ -51,7 +56,7 @@ function TaskList(): JSX.Element {
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
-                handleEditTask(task.id);
+                handleEditTask(task);
               }}
             >
               <EditIcon />

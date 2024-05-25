@@ -1,6 +1,7 @@
 package com.taskmanager.backend.server.controller;
 
 import com.taskmanager.backend.server.dtos.TaskCreationDto;
+import com.taskmanager.backend.server.dtos.TaskUpdateDto;
 import com.taskmanager.backend.server.entities.Task;
 import com.taskmanager.backend.server.services.TaskService;
 import jakarta.validation.Valid;
@@ -39,10 +40,14 @@ public class TaskController {
     }
 
     @GetMapping
-    @CrossOrigin
     public List<Task> getTasks(Pageable pageable) {
         //SLF4J
         log.info("Using SLF4J: Getting task list - getTasks()");
         return StreamSupport.stream(taskService.findTasks(pageable).spliterator(), false).toList();
+    }
+
+    @PutMapping
+    public Task updateTask(@Valid @RequestBody TaskUpdateDto taskUpdateDto) {
+        return taskService.updateTask(taskUpdateDto);
     }
 }

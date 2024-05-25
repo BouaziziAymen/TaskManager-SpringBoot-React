@@ -14,6 +14,7 @@ interface ListContextType {
   tasks: Task[];
   addToList: (task: Task) => void;
   removeFromList: (id: string) => void;
+  refresh: () => void;
 }
 
 export const TaskContext = createContext<ListContextType | undefined>(
@@ -54,9 +55,12 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
       return newList;
     });
   };
+  const refresh = () => {
+    setTasks((prevList) => prevList);
+  };
 
   return (
-    <TaskContext.Provider value={{ tasks, addToList, removeFromList }}>
+    <TaskContext.Provider value={{ tasks, addToList, removeFromList, refresh }}>
       {children}
     </TaskContext.Provider>
   );
