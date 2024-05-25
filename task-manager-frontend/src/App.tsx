@@ -1,9 +1,12 @@
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import "./App.css";
 import Home from "./pages/Home";
 import React, { useEffect, useState, createContext, ReactNode } from "react";
 import axios from "axios";
 import { FC } from "react";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Auth";
 
 export interface Task {
   id: string;
@@ -74,24 +77,19 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
     </TaskContext.Provider>
   );
 };
-
 function App(): JSX.Element {
   return (
-    <body>
+    <BrowserRouter>
       <TaskProvider>
-        <div className="App">
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Typography
-              variant="h5"
-              sx={{ marginBottom: "16px", color: "blue", margin: "5px" }}
-            >
-              Task Manager
-            </Typography>
-          </Box>
-          <Home />
-        </div>
+        <Navbar />
+        <Box sx={{ padding: "20px" }}>
+          <Routes>
+            <Route path="/" Component={Home} />
+            <Route path="/login" Component={Login} />
+          </Routes>
+        </Box>
       </TaskProvider>
-    </body>
+    </BrowserRouter>
   );
 }
 

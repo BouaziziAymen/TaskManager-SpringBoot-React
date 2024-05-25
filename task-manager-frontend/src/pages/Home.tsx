@@ -33,7 +33,7 @@ function Home(): JSX.Element {
 
   return (
     <div>
-      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+      <Box>
         <Button variant="outlined" color="primary" onClick={handleOpenDialog}>
           Add Task
         </Button>
