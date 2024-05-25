@@ -8,6 +8,7 @@ import { FC } from "react";
 export interface Task {
   id: string;
   name: string;
+  done: boolean;
 }
 
 interface ListContextType {
@@ -15,6 +16,7 @@ interface ListContextType {
   addToList: (task: Task) => void;
   removeFromList: (id: string) => void;
   refresh: () => void;
+  updateTask: (task: Task) => void;
 }
 
 export const TaskContext = createContext<ListContextType | undefined>(
@@ -46,6 +48,11 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
       return newList;
     });
   };
+  const updateTask = (updatedTask: Task) => {
+    setTasks(
+      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
+  };
 
   const removeFromList = (id: string) => {
     console.log("task to remove:" + id);
@@ -60,7 +67,9 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addToList, removeFromList, refresh }}>
+    <TaskContext.Provider
+      value={{ tasks, addToList, removeFromList, refresh, updateTask }}
+    >
       {children}
     </TaskContext.Provider>
   );

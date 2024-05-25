@@ -51,6 +51,7 @@ public class TaskService {
             Task task = optionalTask.get();
             if (taskUpdateDto.getName() != null) {
                 task.setName(taskUpdateDto.getName());
+                task.setDone(taskUpdateDto.isDone());
             }
             return taskRepository.save(task);
         } else {

@@ -1,6 +1,12 @@
 import { useContext } from "react";
 import axios from "axios";
-import { ListItem, List, ListItemText, IconButton } from "@mui/material";
+import {
+  ListItem,
+  List,
+  ListItemText,
+  IconButton,
+  Checkbox,
+} from "@mui/material";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,7 +22,22 @@ function TaskList({ onEditClicked }: TaskListProps): JSX.Element {
   if (!context) {
     throw new Error("This must be used within a TaskProvider");
   }
-  const { tasks, removeFromList } = context;
+  const { tasks, removeFromList, updateTask } = context;
+
+  const handleCheckboxChange = (task: Task) => {
+    const updatedTask = { ...task, done: !task.done };
+    console.log("task update:" + updatedTask);
+
+    axios
+      .put(`http://localhost:8080/api/v1/taskmanager`, updatedTask)
+      .then((res) => {
+        console.log("done updating task done:", updatedTask.done);
+        updateTask(updatedTask);
+      })
+      .catch((e) => {
+        console.error(e); // Handle errors here
+      });
+  };
 
   const handleEditTask = (task: Task) => {
     console.log(`Task ${task.id} was to edit`);
@@ -51,8 +72,12 @@ function TaskList({ onEditClicked }: TaskListProps): JSX.Element {
             borderRadius: "4px",
           }}
         >
+          <Checkbox
+            checked={task.done}
+            onChange={() => handleCheckboxChange(task)}
+          />
           <ListItemText primary={task.name} />
-          <div>
+          <>
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -70,7 +95,7 @@ function TaskList({ onEditClicked }: TaskListProps): JSX.Element {
             >
               <DeleteIcon />
             </IconButton>
-          </div>
+          </>
         </ListItem>
       ))}
     </List>

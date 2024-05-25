@@ -10,4 +10,5 @@ import java.util.UUID;
 public class TaskUpdateDto {
     private UUID id;
     private String name;
+    private boolean done;
 }
