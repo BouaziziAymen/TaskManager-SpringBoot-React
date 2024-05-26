@@ -38,8 +38,21 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [token, setToken] = useState<string | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(() => {
+    // Initialize user from localStorage if available
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : undefined;
+  });
+  const [token, setToken] = useState<string | undefined>(() => {
+    // Initialize token from localStorage if available
+    const savedToken = localStorage.getItem("token") as string | undefined;
+    if (savedToken) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+    }
+    return savedToken;
+  });
+  console.log("token is:" + token + " user is:" + user);
+
   const navigate = useNavigate();
 
   const signup = async (email: string, password: string, username: string) => {
@@ -70,14 +83,20 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       console.log("Login successful:" + response.data.response);
       setToken(response.data.response["token"]);
 
+      // Store token in localStorage
+      localStorage.setItem("token", response.data.response["token"]);
+
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.response["token"]}`;
-      setUser({
+
+      const loggedUser = {
         email: response.data.response["email"],
         id: response.data.response["id"],
         username: response.data.response["userName"],
-      });
+      };
+      setUser(loggedUser);
+      localStorage.setItem("user", JSON.stringify(loggedUser));
       navigate("/home");
     } catch (error) {
       console.error("Login failed:", error);
@@ -87,6 +106,11 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const logout = () => {
     setUser(undefined);
     setToken(undefined);
+
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+    // Remove user and token from localStorage
+    localStorage.removeItem("user");
   };
 
   return (
