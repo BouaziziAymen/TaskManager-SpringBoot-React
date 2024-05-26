@@ -43,7 +43,7 @@ function EditTaskFormDialog({
   const postData = () => {
     const apiUrl = `http://localhost:8080/api/v1/taskmanager`;
     axios
-      .put(apiUrl, { name: name, id: editTask.id })
+      .put(apiUrl, { name: name, id: editTask.id, done: editTask.done })
       .then((res) => {
         console.log(res.data);
         onClose();
