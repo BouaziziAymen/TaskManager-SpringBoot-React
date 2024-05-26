@@ -1,13 +1,102 @@
 import { Box } from "@mui/material";
 import "./App.css";
 import Home from "./pages/Home";
-import React, { useEffect, useState, createContext, ReactNode } from "react";
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  ReactNode,
+  useContext,
+} from "react";
 import axios from "axios";
 import { FC } from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter,
+  Routes,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Login from "./pages/Auth";
+import AuthPage from "./pages/Auth";
+import ErrorBoundary from "./components/ErrorBoundary";
 
+// Auth context
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+interface AuthContextType {
+  user: User | undefined;
+  signup: (email: string, username: string, password: string) => void;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+}
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
+
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [token, setToken] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
+
+  const signup = async (email: string, password: string, username: string) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        {
+          userName: username,
+          email,
+          password,
+        }
+      );
+      console.log("Sign up successful:", response.data);
+    } catch (error) {
+      console.error("Sign up failed:", error);
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signin",
+        {
+          email,
+          password,
+        }
+      );
+      console.log("Login successful:" + response.data.response);
+      setToken(response.data.response["token"]);
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.response["token"]}`;
+      setUser({
+        email: response.data.response["email"],
+        id: response.data.response["id"],
+        username: response.data.response["userName"],
+      });
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const logout = () => {
+    setUser(undefined);
+    setToken(undefined);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+//Task context
 export interface Task {
   id: string;
   name: string;
@@ -28,9 +117,13 @@ export const TaskContext = createContext<ListContextType | undefined>(
 
 export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const { user } = useContext(AuthContext) as AuthContextType;
+
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (user) {
+      fetchTasks();
+    }
+  }, [user]);
 
   const fetchTasks = async () => {
     try {
@@ -80,15 +173,21 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
 function App(): JSX.Element {
   return (
     <BrowserRouter>
-      <TaskProvider>
-        <Navbar />
-        <Box sx={{ padding: "20px" }}>
-          <Routes>
-            <Route path="/" Component={Home} />
-            <Route path="/login" Component={Login} />
-          </Routes>
-        </Box>
-      </TaskProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <TaskProvider>
+            <Navbar />
+            <Box sx={{ padding: "20px" }}>
+              <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<AuthPage />} />
+                <Route path="/signup" element={<AuthPage />} />
+                <Route path="/home" element={<Home />} />
+              </Routes>
+            </Box>
+          </TaskProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

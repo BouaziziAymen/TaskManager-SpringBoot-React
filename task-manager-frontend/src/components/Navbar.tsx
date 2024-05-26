@@ -1,10 +1,23 @@
 // src/components/Navbar.tsx
 
-import React from "react";
+import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../App";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("This should be used inside AuthProvider");
+  }
+  const { user, logout } = context;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login"); // Redirect to login after logout
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -14,9 +27,15 @@ const Navbar: React.FC = () => {
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>
-        <Button color="inherit" component={Link} to="/login">
-          Login
-        </Button>
+        {user ? (
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        ) : (
+          <Button color="inherit" component={Link} to="/login">
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
