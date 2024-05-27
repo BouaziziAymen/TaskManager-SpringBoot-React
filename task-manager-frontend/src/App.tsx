@@ -27,7 +27,7 @@ export interface User {
   username: string;
   email: string;
 }
-interface AuthContextType {
+export interface AuthContextType {
   user: User | undefined;
   signup: (email: string, username: string, password: string) => void;
   login: (email: string, password: string) => void;
@@ -55,14 +55,14 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const signup = async (email: string, password: string, username: string) => {
+  const signup = async (email: string, username: string, password: string) => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/auth/signup",
         {
           userName: username,
-          email,
-          password,
+          email: email,
+          password: password,
         }
       );
       console.log("Sign up successful:", response.data);
@@ -111,6 +111,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.removeItem("token");
     // Remove user and token from localStorage
     localStorage.removeItem("user");
+    axios.defaults.headers.common["Authorization"] = ``;
   };
 
   return (
@@ -144,22 +145,21 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useContext(AuthContext) as AuthContextType;
 
   useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get<Task[]>(
+          `http://localhost:8080/api/v1/taskmanager?user_id=${user?.id}`
+        );
+        response.data.sort((a, b) => a.name.localeCompare(b.name));
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching tasks:" + error);
+      }
+    };
     if (user) {
       fetchTasks();
     }
   }, [user]);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get<Task[]>(
-        "http://localhost:8080/api/v1/taskmanager"
-      );
-      response.data.sort((a, b) => a.name.localeCompare(b.name));
-      setTasks(response.data);
-    } catch (error) {
-      console.error("Error fetching tasks:" + error);
-    }
-  };
 
   const addToList = (item: Task) => {
     setTasks((prevList) => {

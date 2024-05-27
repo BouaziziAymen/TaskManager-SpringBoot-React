@@ -11,7 +11,7 @@ const AuthPage: React.FC = () => {
     throw new Error("This must be used within a AuthProvider");
   }
 
-  const { login, logout, signup } = context;
+  const { login, signup } = context;
 
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -32,6 +32,7 @@ const AuthPage: React.FC = () => {
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(`e:${email} n:${name} p:${password}`);
     signup(email, name, password);
     //call context sign up
   };

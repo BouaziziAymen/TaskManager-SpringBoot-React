@@ -3,7 +3,9 @@ package com.taskmanager.backend.server.controller;
 import com.taskmanager.backend.server.dtos.TaskCreationDto;
 import com.taskmanager.backend.server.dtos.TaskUpdateDto;
 import com.taskmanager.backend.server.entities.Task;
+import com.taskmanager.backend.server.entities.User;
 import com.taskmanager.backend.server.services.TaskService;
+import com.taskmanager.backend.server.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +27,17 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public Task getTaskById(@PathVariable("id") UUID id) {
         return taskService.findTaskById(id);
     }
     @PostMapping
     public Task postTask(@Valid @RequestBody TaskCreationDto taskCreationDto){
-        return taskService.addTask(Task.builder().name(taskCreationDto.getName()).build());
+        User user = userService.getById(taskCreationDto.getUserId());
+        return taskService.addTask(Task.builder().name(taskCreationDto.getName()).user(user).build());
     }
 
     @DeleteMapping("/{id}")
@@ -40,10 +46,10 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(Pageable pageable) {
+    public List<Task> getTasks(Pageable pageable,@RequestParam("user_id") Long id) {
         //SLF4J
         log.info("Using SLF4J: Getting task list - getTasks()");
-        return StreamSupport.stream(taskService.findTasks(pageable).spliterator(), false).toList();
+        return StreamSupport.stream(taskService.findTasks(pageable,id).spliterator(), false).toList();
     }
 
     @PutMapping

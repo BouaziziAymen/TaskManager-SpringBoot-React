@@ -6,5 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TaskCreationDto {
+
+    private Long userId;
     private String name;
 }

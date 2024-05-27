@@ -2,7 +2,7 @@ import axios from "axios";
 import "./TaskFormDialog.css";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { TaskContext } from "../../App";
+import { AuthContext, AuthContextType, TaskContext } from "../../App";
 
 interface TaskFormDialogProps {
   open: boolean;
@@ -16,6 +16,11 @@ function TaskFormDialog({ open, onClose }: TaskFormDialogProps): JSX.Element {
   if (!context) {
     throw new Error("This must be used within a TaskProvider");
   }
+  const { user } = useContext(AuthContext) as AuthContextType;
+  if (!user) {
+    throw new Error("A user must be authenticated here!");
+  }
+
   const { addToList } = context;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +41,7 @@ function TaskFormDialog({ open, onClose }: TaskFormDialogProps): JSX.Element {
   const postData = () => {
     const apiUrl = `http://localhost:8080/api/v1/taskmanager`;
     axios
-      .post(apiUrl, { name: task })
+      .post(apiUrl, { name: task, userId: user.id })
       .then((res) => {
         console.log(res.data);
         addToList(res.data);

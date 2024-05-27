@@ -33,15 +33,12 @@ public class TaskService {
         taskRepository.save(task);
     }
     private Task findOrThrow(final UUID id){
-        return taskRepository.findById(id).orElseThrow(()->new NotFoundException("Anti-Hero not found id="+id));
+        return taskRepository.findById(id).orElseThrow(()->new NotFoundException("Task not found id="+id));
     }
 
-    public Iterable<Task> findAllTasks(){
-        return taskRepository.findAll();
-    }
 
-    public Iterable<Task> findTasks(Pageable pageable){
-        return taskRepository.findAll(pageable);
+    public Iterable<Task> findTasks(Pageable pageable, Long userId){
+        return taskRepository.findByUserId(userId,pageable);
     }
 
 
