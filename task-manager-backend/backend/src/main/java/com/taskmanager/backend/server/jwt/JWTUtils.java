@@ -24,8 +24,11 @@ public class JWTUtils {
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        return generateTokenFromUsername(userPrincipal.getUsername());
+    }
+    public String generateTokenFromUsername(String username) {
         return Jwts.builder()
-                .setSubject((userPrincipal.getEmail()))
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)

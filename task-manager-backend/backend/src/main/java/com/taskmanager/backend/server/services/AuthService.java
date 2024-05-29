@@ -4,6 +4,7 @@ import com.taskmanager.backend.server.dtos.ApiResponseDto;
 import com.taskmanager.backend.server.dtos.SignInRequestDto;
 import com.taskmanager.backend.server.dtos.SignInResponseDto;
 import com.taskmanager.backend.server.dtos.SignUpRequestDto;
+import com.taskmanager.backend.server.entities.RefreshToken;
 import com.taskmanager.backend.server.entities.Role;
 import com.taskmanager.backend.server.entities.User;
 import com.taskmanager.backend.server.exception.RoleNotFoundException;
@@ -37,6 +38,8 @@ public class AuthService  {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -75,6 +78,8 @@ public class AuthService  {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userService.getByUsername(userDetails.getUsername()));
 
         SignInResponseDto signInResponseDto = SignInResponseDto.builder()
                 .username(userDetails.getUsername())

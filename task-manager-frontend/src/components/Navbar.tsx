@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Task Manager
         </Typography>
-        <Button color="inherit" component={Link} to="/">
+        <Button color="inherit" component={Link} to="/home">
           Home
         </Button>
         {user ? (

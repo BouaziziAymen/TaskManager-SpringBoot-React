@@ -32,7 +32,7 @@ const AuthPage: React.FC = () => {
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(`e:${email} n:${name} p:${password}`);
+    console.log(`${email} n:${name} p:${password}`);
     signup(email, name, password);
     //call context sign up
   };
@@ -47,13 +47,18 @@ const AuthPage: React.FC = () => {
       }}
     >
       {isLogin ? (
-        <Box sx={{ width: "300px" }} component="form" onSubmit={handleLogin}>
+        <Box
+          sx={{ width: "300px" }}
+          component="form"
+          onSubmit={handleLogin}
+          key="signupForm"
+        >
           <Typography variant="h4" gutterBottom>
             Login
           </Typography>
           <TextField
-            type="email"
             label="Email"
+            type="email"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -86,7 +91,12 @@ const AuthPage: React.FC = () => {
           </Typography>
         </Box>
       ) : (
-        <Box sx={{ width: "300px" }} component="form" onSubmit={handleSignUp}>
+        <Box
+          sx={{ width: "300px" }}
+          component="form"
+          onSubmit={handleSignUp}
+          key="loginForm"
+        >
           <Typography variant="h4" gutterBottom>
             Sign Up
           </Typography>
