@@ -48,6 +48,7 @@ const AuthPage: React.FC = () => {
     >
       {isLogin ? (
         <Box
+          data-testid="login-page"
           sx={{ width: "300px" }}
           component="form"
           onSubmit={handleLogin}
@@ -57,6 +58,7 @@ const AuthPage: React.FC = () => {
             Login
           </Typography>
           <TextField
+            inputProps={{ "data-testid": "login-email" }}
             label="Email"
             type="email"
             variant="outlined"
@@ -66,6 +68,7 @@ const AuthPage: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
+            inputProps={{ "data-testid": "login-password" }}
             label="Password"
             type="password"
             variant="outlined"
@@ -92,6 +95,7 @@ const AuthPage: React.FC = () => {
         </Box>
       ) : (
         <Box
+          data-testid="signup-page"
           sx={{ width: "300px" }}
           component="form"
           onSubmit={handleSignUp}
