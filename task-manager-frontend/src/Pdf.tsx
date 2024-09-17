@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
   },
   tableRow: {
     flexDirection: "row",
@@ -42,13 +39,10 @@ const styles = StyleSheet.create({
   },
   fullWidthCol: {
     flex: 1,
-    borderColor: "#bfbfbf",
-    padding: 5,
     width: "100%",
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
-    borderBottomWidth: 1,
   },
   grayContainer: {
     backgroundColor: "#f0f0f0",
@@ -80,7 +74,6 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   questionContainer: {
-    borderColor: "#bfbfbf",
     padding: 5,
     marginBottom: 30,
   },
@@ -88,9 +81,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     flexWrap: "wrap",
     textAlign: "left",
-  },
-  blankZone: {
-    height: 1,
   },
   questionBlankZone: {
     height: 30,
@@ -122,7 +112,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 5,
     padding: 5,
-    border: "1px solid #bfbfbf",
     backgroundColor: "#ffffff",
     height: 30,
   },
@@ -267,9 +256,6 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
                 </View>
               </View>
             </View>
-            {index < questionPart.parts.length - 1 && (
-              <View style={styles.blankZone} />
-            )}
           </React.Fragment>
         ))}
         {partIndex < question.questionContent.length - 1 && (
