@@ -184,9 +184,9 @@ const groupQuestionsByCategoryAndAccount = (
 };
 
 const getResponseComponent = (category: string) => {
-  if (category === "Category 1") {
+  if (category === "Category 2") {
     return ThreeBoxCustomResponse;
-  } else if (category === "Category 2") {
+  } else if (category === "Category 3") {
     return (props: any) => (
       <CustomTextBox text="/...../...../...../" {...props} />
     );
