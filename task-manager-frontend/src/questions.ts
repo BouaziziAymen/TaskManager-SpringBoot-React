@@ -130,3 +130,27 @@ export interface Question {
     parts: string[];
   }[];
 }
+
+// Define the background colors for each category
+export const categoryColors: { [key: string]: string } = {
+  "Category 1": "#e0f7fa", // Light cyan
+  "Category 2": "#ffecb3", // Light yellow
+  "Category 3": "#c8e6c9", // Light green
+  "Category 4": "#ffccbc", // Light coral
+  "Category 5": "#c5cae9", // Light indigo
+  "Category 6": "#f8bbd0", // Light pink
+  "Category 7": "#dcedc8", // Light lime
+  "Category 8": "#fff9c4", // Light amber
+  "Category 9": "#e1bee7", // Light purple
+  "Category 10": "#b3e5fc", // Light blue
+  "Category 11": "#ffcdd2", // Light red
+  "Category 12": "#d0f0c0", // Light green
+  "Category 13": "#ffebee", // Light red pink
+  "Category 14": "#e3f2fd", // Light sky blue
+  "Category 15": "#ffeb3b", // Yellow
+  "Category 16": "#cfd8dc", // Light grey blue
+  "Category 17": "#f5f5f5", // Light grey
+  "Category 18": "#dcedc8", // Light olive
+  "Category 19": "#b9fbc0", // Light mint
+  "Category 20": "#ffab91", // Light orange
+};

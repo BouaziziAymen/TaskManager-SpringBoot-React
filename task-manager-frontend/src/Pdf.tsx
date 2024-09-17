@@ -1,111 +1,15 @@
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import React from "react";
-import { questions } from "./questions";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
+import { categoryColors, questions } from "./questions";
 
-// Define styles using flexbox
-const styles = StyleSheet.create({
-  table: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-  },
-  tableRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  fullWidthCol: {
-    flex: 1,
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    padding: 5,
-    width: "100%",
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-  },
-  grayContainer: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-  },
-  tableHeader: {
-    padding: 5,
-    fontSize: 14, // Larger font size for headers
-    fontWeight: "bold",
-    borderBottomWidth: 1,
-    borderBottomColor: "#bfbfbf",
-  },
-  categoryHeader: {
-    padding: 10,
-    fontSize: 18, // Largest font size for category headers
-    fontWeight: "bold",
-    backgroundColor: "#e0f7fa", // Light cyan for category headers
-  },
-  accountHeader: {
-    padding: 8,
-    fontSize: 16, // Slightly smaller font size for account headers
-    fontWeight: "bold",
-    backgroundColor: "#2196F3", // Blue background
-    color: "#ffffff", // White text color
-  },
-  questionContainer: {
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    padding: 5,
-    marginBottom: 30, // Larger margin for more space between questions
-  },
-  questionText: {
-    fontSize: 12, // Slightly larger font size for question text
-    flexWrap: "wrap",
-    textAlign: "left",
-  },
-  responseText: {
-    fontSize: 12, // Consistent font size with question text
-    color: "#333",
-  },
-  blankZone: {
-    height: 10, // Adjust this height to control spacing between parts
-  },
-  questionBlankZone: {
-    height: 30, // Larger blank zone between questions
-  },
-  partContainer: {
-    padding: 5,
-    backgroundColor: "#f0f0f0",
-    flexGrow: 1,
-  },
-  partText: {
-    fontSize: 12, // Consistent font size with question and response text
-    textAlign: "left",
-  },
-  infoBox: {
-    width: "30%", // Fixed width of 30%
-    padding: 10,
-    border: "1px solid #bfbfbf",
-    backgroundColor: "#ffffff",
-    fontSize: 10,
-    alignSelf: "flex-end",
-    marginBottom: 20,
-  },
-  container: {
-    marginTop: 20, // Space between the top of the page and the container
-  },
-  contentWrapper: {
-    marginTop: 20, // Margin to push the table down
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end", // Align the content to the right
-  },
-});
-
-// Define types for questions and grouped questions
+// Définir les types pour les questions et les questions regroupées
 interface Question {
   category: string;
   account: string;
@@ -124,14 +28,147 @@ interface GroupedQuestions {
   };
 }
 
-// Define the background colors for each category
-const categoryColors: { [key: string]: string } = {
-  "Category 1": "#e0f7fa", // Light cyan
-  "Category 2": "#ffecb3", // Light yellow
-  "Category 3": "#c8e6c9", // Light green
-};
+// Définir les styles en utilisant Flexbox
+const styles = StyleSheet.create({
+  table: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "#bfbfbf",
+  },
+  tableRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  fullWidthCol: {
+    flex: 1,
+    borderColor: "#bfbfbf",
+    padding: 5,
+    width: "100%",
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+  },
+  grayContainer: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+  },
+  tableHeader: {
+    padding: 5,
+    fontSize: 14,
+    fontWeight: "bold",
+    borderBottomWidth: 1,
+    borderBottomColor: "#bfbfbf",
+  },
+  categoryAndAccountHeader: {
+    padding: 10,
+    fontSize: 18,
+    fontWeight: "bold",
+    borderWidth: 2,
+    borderColor: "#000000",
+    borderStyle: "solid",
+  },
+  accountHeader: {
+    padding: 8,
+    fontSize: 16,
+    fontWeight: "bold",
+    backgroundColor: "#2196F3",
+    color: "#ffffff",
+  },
+  questionContainer: {
+    borderColor: "#bfbfbf",
+    padding: 5,
+    marginBottom: 30,
+  },
+  questionText: {
+    fontSize: 12,
+    flexWrap: "wrap",
+    textAlign: "left",
+  },
+  blankZone: {
+    height: 1,
+  },
+  questionBlankZone: {
+    height: 30,
+  },
+  partContainer: {
+    padding: 5,
+    backgroundColor: "#f0f0f0",
+    flexGrow: 1,
+  },
+  partText: {
+    fontSize: 12,
+    textAlign: "left",
+  },
 
-// Helper function to group questions by category and account
+  container: {
+    marginTop: 20,
+  },
+  contentWrapper: {
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+  },
+  threeBoxResponse: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  responseBox: {
+    flex: 1,
+    margin: 2,
+    padding: 5,
+    border: "1px solid #bfbfbf",
+    backgroundColor: "#ffffff",
+  },
+  logoAndInfoWrapper: {
+    flexDirection: "row", // Align items horizontally
+    justifyContent: "space-between", // Space out logo and info box
+    alignItems: "flex-start", // Align items to the start of the container
+    width: "100%", // Ensure the wrapper uses the full width
+    marginBottom: 20, // Margin at the bottom to separate from the following content
+  },
+  logo: {
+    width: 100, // Width of the logo, adjust as needed
+    height: 50, // Height of the logo, adjust as needed
+    margin: 20,
+  },
+  infoBox: {
+    width: "30%", // Fixed width of 30%
+    padding: 10,
+    border: "1px solid #bfbfbf",
+    backgroundColor: "#ffffff",
+    fontSize: 15,
+    textAlign: "left", // Align text to the right
+  },
+});
+
+// Définir les composants de réponse personnalisés
+const ThreeBoxCustomResponse: React.FC = () => (
+  <View style={styles.threeBoxResponse}>
+    <View style={styles.responseBox}>
+      <Text>Box 1</Text>
+    </View>
+    <View style={styles.responseBox}>
+      <Text>Box 2</Text>
+    </View>
+    <View style={styles.responseBox}>
+      <Text>Box 3</Text>
+    </View>
+  </View>
+);
+
+const CustomResponseComponent: React.FC = () => (
+  <Text>Custom Response</Text> // Composant de réponse personnalisable
+);
+
+// Fonction d'aide pour regrouper les questions par catégorie et compte
 const groupQuestionsByCategoryAndAccount = (
   questions: Question[]
 ): GroupedQuestions => {
@@ -152,30 +189,53 @@ const groupQuestionsByCategoryAndAccount = (
   }, {} as GroupedQuestions);
 };
 
-// Component for rendering Category Header
+// Méthode pour retourner le composant de réponse approprié en fonction des critères
+const getResponseComponent = (category: string) => {
+  // Exemple de logique : utiliser `ThreeBoxCustomResponse` pour "Category 1", sinon utiliser `CustomResponseComponent`
+  return category === "Category 1"
+    ? ThreeBoxCustomResponse
+    : CustomResponseComponent;
+};
+
+// Composant pour rendre l'en-tête de catégorie
 const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
-  const backgroundColor = categoryColors[category] || "#ffffff"; // Default color if not found
+  const backgroundColor = categoryColors[category] || "#ffffff"; // Couleur par défaut si non trouvée
 
   return (
     <View style={[styles.tableRow, { backgroundColor }]}>
-      <Text style={[styles.fullWidthCol, styles.categoryHeader]}>
+      <Text style={[styles.fullWidthCol, styles.categoryAndAccountHeader]}>
         {category}
       </Text>
     </View>
   );
 };
 
-// Component for rendering Account Header
+// Composant pour rendre l'en-tête de compte
 const AccountHeader: React.FC<{ account: string }> = ({ account }) => (
   <View style={styles.tableRow}>
-    <Text style={[styles.fullWidthCol, styles.accountHeader]}>{account}</Text>
+    <Text
+      style={[
+        styles.fullWidthCol,
+        styles.categoryAndAccountHeader,
+        styles.accountHeader,
+      ]}
+    >
+      {account}
+    </Text>
   </View>
 );
 
-// Component for rendering Question Row
-const QuestionRow: React.FC<{
+// Définir un type pour le composant de réponse personnalisable
+interface QuestionRowProps {
   question: { questionContent: { parts: string[] }[] };
-}> = ({ question }) => (
+  ResponseComponent: React.ComponentType; // Composant personnalisable pour les réponses
+}
+
+// Composant pour rendre la ligne de question avec le composant de réponse personnalisable
+const QuestionRow: React.FC<QuestionRowProps> = ({
+  question,
+  ResponseComponent,
+}) => (
   <>
     {question.questionContent.map((questionPart, partIndex) => (
       <React.Fragment key={partIndex}>
@@ -189,17 +249,18 @@ const QuestionRow: React.FC<{
               </View>
               <View style={styles.fullWidthCol}>
                 <View style={styles.partContainer}>
-                  <Text style={styles.responseText}>response</Text>
+                  <ResponseComponent />{" "}
+                  {/* Rendre le composant de réponse personnalisable */}
                 </View>
               </View>
             </View>
-            {/* Blank zone between parts */}
+            {/* Zone blanche entre les parties */}
             {index < questionPart.parts.length - 1 && (
               <View style={styles.blankZone} />
             )}
           </React.Fragment>
         ))}
-        {/* Larger blank zone between questions */}
+        {/* Zone blanche plus grande entre les questions */}
         {partIndex < question.questionContent.length - 1 && (
           <View style={styles.questionBlankZone} />
         )}
@@ -209,7 +270,7 @@ const QuestionRow: React.FC<{
 );
 
 const MyDocument: React.FC = () => {
-  // Group questions by category and account
+  // Regrouper les questions par catégorie et compte
   const groupedQuestions = groupQuestionsByCategoryAndAccount(questions);
 
   return (
@@ -217,11 +278,17 @@ const MyDocument: React.FC = () => {
       <Page size="A4">
         <View style={styles.container}>
           <View style={styles.contentWrapper}>
-            <View style={styles.infoBox}>
-              <Text>Info Line 1</Text>
-              <Text>Info Line 2</Text>
-              <Text>Info Line 3</Text>
-              {/* Add more lines as needed */}
+            <View style={styles.logoAndInfoWrapper}>
+              <Image
+                src="logo192.png" // Chemin du logo
+                style={styles.logo} // Appliquer le style du logo
+              />
+              <View style={styles.infoBox}>
+                <Text>Info Line 1</Text>
+                <Text>Info Line 2</Text>
+                <Text>Info Line 3</Text>
+                {/* Ajouter plus de lignes si nécessaire */}
+              </View>
             </View>
             <View style={styles.table}>
               {Object.keys(groupedQuestions).map((category) => (
@@ -233,7 +300,10 @@ const MyDocument: React.FC = () => {
                       {groupedQuestions[category][account].map(
                         (question, index) => (
                           <View style={styles.questionContainer} key={index}>
-                            <QuestionRow question={question} />
+                            <QuestionRow
+                              question={question}
+                              ResponseComponent={getResponseComponent(category)} // Passer le composant de réponse personnalisable
+                            />
                           </View>
                         )
                       )}
