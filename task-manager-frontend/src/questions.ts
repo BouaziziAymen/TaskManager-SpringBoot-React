@@ -5,8 +5,10 @@ export const questions: Question[] = [
     questionContent: [
       {
         parts: [
-          "Question A1 Part 1: This part is exceptionally long and designed to test how the text wraps within the available space. It might be so long that it spans multiple lines, and it needs to be handled gracefully in the PDF rendering. This ensures that every single part of the question is fully visible and correctly formatted in the document layout.",
-          "Question A1 Part 2: Another part of this question, which could also be quite lengthy, contributing to a potentially long overall question. The goal is to ensure that long texts do not break the layout or cause unexpected formatting issues.",
+          "Question introduction it can be this long?",
+          "- Question part 1",
+          "- Question part 2",
+          "- Question part 3",
         ],
       },
     ],

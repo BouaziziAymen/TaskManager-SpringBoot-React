@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   fullWidthCol: {
     flex: 1,
     borderColor: "#bfbfbf",
-    padding: 5,
+    padding: 2,
     width: "100%",
     textAlign: "center",
     display: "flex",
@@ -88,14 +88,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     textAlign: "left",
   },
-  blankZone: {
-    height: 1,
-  },
   questionBlankZone: {
     height: 30,
   },
   partContainer: {
-    padding: 5,
     backgroundColor: "#f0f0f0",
     flexGrow: 1,
   },
@@ -194,9 +190,9 @@ const groupQuestionsByCategoryAndAccount = (
 };
 
 const getResponseComponent = (category: string) => {
-  if (category === "Category 1") {
+  if (category === "Category 2") {
     return ThreeBoxCustomResponse;
-  } else if (category === "Category 2") {
+  } else if (category === "Category 3") {
     return (props: any) => (
       <CustomTextBox text="/...../...../...../" {...props} />
     );
@@ -257,9 +253,6 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
                 </View>
               </View>
             </View>
-            {index < questionPart.parts.length - 1 && (
-              <View style={styles.blankZone} />
-            )}
           </React.Fragment>
         ))}
         {partIndex < question.questionContent.length - 1 && (
