@@ -122,10 +122,11 @@ const styles = StyleSheet.create({
   },
   responseBox: {
     flex: 1,
-    margin: 2,
+    margin: 5,
     padding: 5,
     border: "1px solid #bfbfbf",
     backgroundColor: "#ffffff",
+    height: 30,
   },
   logoAndInfoWrapper: {
     flexDirection: "row", // Align items horizontally
@@ -147,25 +148,35 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "left", // Align text to the right
   },
+  customBox: {
+    justifyContent: "center", // Center text vertically
+    alignItems: "center", // Center text horizontally
+    border: "1px solid #bfbfbf",
+    backgroundColor: "#ffffff",
+  },
+  customBoxText: {
+    fontSize: 12,
+    textAlign: "center",
+  },
 });
 
 // Définir les composants de réponse personnalisés
 const ThreeBoxCustomResponse: React.FC = () => (
   <View style={styles.threeBoxResponse}>
-    <View style={styles.responseBox}>
-      <Text>Box 1</Text>
-    </View>
-    <View style={styles.responseBox}>
-      <Text>Box 2</Text>
-    </View>
-    <View style={styles.responseBox}>
-      <Text>Box 3</Text>
-    </View>
+    <View style={styles.responseBox}></View>
+    <View style={styles.responseBox}></View>
+    <View style={styles.responseBox}></View>
   </View>
 );
 
-const CustomResponseComponent: React.FC = () => (
-  <Text>Custom Response</Text> // Composant de réponse personnalisable
+const CustomTextBox: React.FC<{ text: string }> = ({ text }) => (
+  <View style={styles.customBox}>
+    <Text style={styles.customBoxText}>{text}</Text>
+  </View>
+);
+
+const EmptyCustomResponse: React.FC = () => (
+  <View /> // Composant de réponse personnalisable
 );
 
 // Fonction d'aide pour regrouper les questions par catégorie et compte
@@ -191,10 +202,15 @@ const groupQuestionsByCategoryAndAccount = (
 
 // Méthode pour retourner le composant de réponse approprié en fonction des critères
 const getResponseComponent = (category: string) => {
-  // Exemple de logique : utiliser `ThreeBoxCustomResponse` pour "Category 1", sinon utiliser `CustomResponseComponent`
-  return category === "Category 1"
-    ? ThreeBoxCustomResponse
-    : CustomResponseComponent;
+  if (category === "Category 1") {
+    return ThreeBoxCustomResponse;
+  } else if (category === "Category 2") {
+    return (props: any) => (
+      <CustomTextBox text="/...../...../...../" {...props} />
+    );
+  } else {
+    return EmptyCustomResponse;
+  }
 };
 
 // Composant pour rendre l'en-tête de catégorie
