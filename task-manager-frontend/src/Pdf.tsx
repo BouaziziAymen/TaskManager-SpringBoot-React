@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
+    borderBottomWidth: 1,
   },
   grayContainer: {
     backgroundColor: "#f0f0f0",
@@ -235,7 +236,6 @@ interface QuestionRowProps {
   question: { questionContent: { parts: string[] }[] };
   ResponseComponent: React.ComponentType;
 }
-
 const QuestionRow: React.FC<QuestionRowProps> = ({
   question,
   ResponseComponent,
@@ -246,12 +246,22 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
         {questionPart.parts.map((part, index) => (
           <React.Fragment key={index}>
             <View style={styles.tableRow}>
-              <View style={styles.fullWidthCol}>
+              <View
+                style={[
+                  styles.fullWidthCol,
+                  { borderRightWidth: 1, borderRightColor: "black" },
+                ]}
+              >
                 <View style={styles.partContainer}>
                   <Text style={styles.partText}>{part}</Text>
                 </View>
               </View>
-              <View style={styles.fullWidthCol}>
+              <View
+                style={[
+                  styles.fullWidthCol,
+                  { borderLeftWidth: 1, borderLeftColor: "black" },
+                ]}
+              >
                 <View style={styles.partContainer}>
                   <ResponseComponent />
                 </View>
