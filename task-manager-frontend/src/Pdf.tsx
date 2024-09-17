@@ -40,11 +40,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
+  questionRow: {
+    marginBottom: 10,
+  },
   fullWidthCol: {
     flex: 1,
     borderColor: "#bfbfbf",
     padding: 2,
-    width: "100%",
+    width: "50%", // Changed width to 50% for two columns
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
@@ -72,7 +75,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
   },
   accountHeader: {
-    padding: 8,
     fontSize: 16,
     fontWeight: "bold",
     backgroundColor: "#2196F3",
@@ -81,19 +83,17 @@ const styles = StyleSheet.create({
   questionContainer: {
     borderColor: "#bfbfbf",
     padding: 5,
-    marginBottom: 30,
   },
   questionText: {
     fontSize: 12,
     flexWrap: "wrap",
     textAlign: "left",
   },
-  questionBlankZone: {
-    height: 30,
-  },
   partContainer: {
     backgroundColor: "#f0f0f0",
     flexGrow: 1,
+    borderRadius: 5,
+    padding: 10,
   },
   partText: {
     fontSize: 12,
@@ -150,6 +150,10 @@ const styles = StyleSheet.create({
   customBoxText: {
     fontSize: 12,
     textAlign: "center",
+  },
+  verticalDivider: {
+    width: 1,
+    backgroundColor: "#bfbfbf",
   },
 });
 
@@ -238,7 +242,7 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
 }) => (
   <>
     {question.questionContent.map((questionPart, partIndex) => (
-      <React.Fragment key={partIndex}>
+      <View key={partIndex} style={styles.questionRow}>
         {questionPart.parts.map((part, index) => (
           <React.Fragment key={index}>
             <View style={styles.tableRow}>
@@ -247,6 +251,7 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
                   <Text style={styles.partText}>{part}</Text>
                 </View>
               </View>
+              <View style={styles.verticalDivider} />
               <View style={styles.fullWidthCol}>
                 <View style={styles.partContainer}>
                   <ResponseComponent />
@@ -255,10 +260,7 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
             </View>
           </React.Fragment>
         ))}
-        {partIndex < question.questionContent.length - 1 && (
-          <View style={styles.questionBlankZone} />
-        )}
-      </React.Fragment>
+      </View>
     ))}
   </>
 );

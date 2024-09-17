@@ -1,4 +1,5 @@
 export const questions: Question[] = [
+  // Existing questions
   {
     category: "Category 1",
     account: "Account 1",
@@ -121,7 +122,68 @@ export const questions: Question[] = [
       },
     ],
   },
-  // Add more questions as needed...
+
+  // New questions
+  {
+    category: "Category 1",
+    account: "Account 3",
+    questionContent: [
+      {
+        parts: [
+          "Question J1 Part 1: A new question for Category 1 to further assess the document's handling of content and formatting. This should be tested for various text lengths and styles.",
+          "Question J1 Part 2: Additional content to ensure comprehensive evaluation of the document's layout adaptability and rendering capabilities.",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Category 2",
+    account: "Account 3",
+    questionContent: [
+      {
+        parts: [
+          "Question K1 Part 1: A new entry for Category 2 to test different content formats and verify that the layout maintains consistency and readability.",
+          "Question K1 Part 2: Extended content to ensure the document effectively manages various text lengths and formatting styles.",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Category 3",
+    account: "Account 3",
+    questionContent: [
+      {
+        parts: [
+          "Question L1 Part 1: Adding a new question for Category 3 to examine how the document handles different types of content and maintains formatting integrity.",
+          "Question L1 Part 2: Additional content for thorough testing of the document's ability to adapt to varying content lengths and styles.",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Category 4",
+    account: "Account 3",
+    questionContent: [
+      {
+        parts: [
+          "Question M1 Part 1: A new question for Category 4 to explore the document's handling of extensive content and different formatting needs.",
+          "Question M1 Part 2: Additional text to ensure the PDF rendering accommodates various content types and maintains readability.",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Category 5",
+    account: "Account 3",
+    questionContent: [
+      {
+        parts: [
+          "Question N1 Part 1: Introducing a new question for Category 5 to test the document's flexibility in managing diverse and lengthy content.",
+          "Question N1 Part 2: Extended content to verify that the PDF rendering engine handles different styles and lengths effectively.",
+        ],
+      },
+    ],
+  },
 ];
 
 // Define types for questions and grouped questions
