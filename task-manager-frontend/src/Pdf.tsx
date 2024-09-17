@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Page,
   Text,
@@ -40,14 +40,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-  questionRow: {
-    marginBottom: 10,
-  },
   fullWidthCol: {
     flex: 1,
     borderColor: "#bfbfbf",
     padding: 2,
-    width: "50%", // Changed width to 50% for two columns
+    width: "50%",
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
@@ -75,6 +72,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
   },
   accountHeader: {
+    padding: 8,
     fontSize: 16,
     fontWeight: "bold",
     backgroundColor: "#2196F3",
@@ -83,11 +81,15 @@ const styles = StyleSheet.create({
   questionContainer: {
     borderColor: "#bfbfbf",
     padding: 5,
+    marginBottom: 30,
   },
   questionText: {
     fontSize: 12,
     flexWrap: "wrap",
     textAlign: "left",
+  },
+  questionBlankZone: {
+    height: 30,
   },
   partContainer: {
     backgroundColor: "#f0f0f0",
@@ -157,21 +159,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const ThreeBoxCustomResponse: React.FC = () => (
+const ThreeBoxCustomResponse: React.FC = React.memo(() => (
   <View style={styles.threeBoxResponse}>
     <View style={styles.responseBox}></View>
     <View style={styles.responseBox}></View>
     <View style={styles.responseBox}></View>
   </View>
-);
+));
 
-const CustomTextBox: React.FC<{ text: string }> = ({ text }) => (
+const CustomTextBox: React.FC<{ text: string }> = React.memo(({ text }) => (
   <View style={styles.customBox}>
     <Text style={styles.customBoxText}>{text}</Text>
   </View>
-);
+));
 
-const EmptyCustomResponse: React.FC = () => <View />;
+const EmptyCustomResponse: React.FC = React.memo(() => <View />);
 
 const groupQuestionsByCategoryAndAccount = (
   questions: Question[]
@@ -205,30 +207,34 @@ const getResponseComponent = (category: string) => {
   }
 };
 
-const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
-  const backgroundColor = categoryColors[category] || "#ffffff";
+const CategoryHeader: React.FC<{ category: string }> = React.memo(
+  ({ category }) => {
+    const backgroundColor = categoryColors[category] || "#ffffff";
 
-  return (
-    <View style={[styles.tableRow, { backgroundColor }]}>
-      <Text style={[styles.fullWidthCol, styles.categoryAndAccountHeader]}>
-        {category}
+    return (
+      <View style={[styles.tableRow, { backgroundColor }]}>
+        <Text style={[styles.fullWidthCol, styles.categoryAndAccountHeader]}>
+          {category}
+        </Text>
+      </View>
+    );
+  }
+);
+
+const AccountHeader: React.FC<{ account: string }> = React.memo(
+  ({ account }) => (
+    <View style={styles.tableRow}>
+      <Text
+        style={[
+          styles.fullWidthCol,
+          styles.categoryAndAccountHeader,
+          styles.accountHeader,
+        ]}
+      >
+        {account}
       </Text>
     </View>
-  );
-};
-
-const AccountHeader: React.FC<{ account: string }> = ({ account }) => (
-  <View style={styles.tableRow}>
-    <Text
-      style={[
-        styles.fullWidthCol,
-        styles.categoryAndAccountHeader,
-        styles.accountHeader,
-      ]}
-    >
-      {account}
-    </Text>
-  </View>
+  )
 );
 
 interface QuestionRowProps {
@@ -236,37 +242,42 @@ interface QuestionRowProps {
   ResponseComponent: React.ComponentType;
 }
 
-const QuestionRow: React.FC<QuestionRowProps> = ({
-  question,
-  ResponseComponent,
-}) => (
-  <>
-    {question.questionContent.map((questionPart, partIndex) => (
-      <View key={partIndex} style={styles.questionRow}>
-        {questionPart.parts.map((part, index) => (
-          <React.Fragment key={index}>
-            <View style={styles.tableRow}>
-              <View style={styles.fullWidthCol}>
-                <View style={styles.partContainer}>
-                  <Text style={styles.partText}>{part}</Text>
+const QuestionRow: React.FC<QuestionRowProps> = React.memo(
+  ({ question, ResponseComponent }) => (
+    <>
+      {question.questionContent.map((questionPart, partIndex) => (
+        <React.Fragment key={partIndex}>
+          {questionPart.parts.map((part, index) => (
+            <React.Fragment key={index}>
+              <View style={styles.tableRow}>
+                <View style={styles.fullWidthCol}>
+                  <View style={styles.partContainer}>
+                    <Text style={styles.partText}>{part}</Text>
+                  </View>
+                </View>
+                <View style={styles.verticalDivider} />
+                <View style={styles.fullWidthCol}>
+                  <View style={styles.partContainer}>
+                    <ResponseComponent />
+                  </View>
                 </View>
               </View>
-              <View style={styles.verticalDivider} />
-              <View style={styles.fullWidthCol}>
-                <View style={styles.partContainer}>
-                  <ResponseComponent />
-                </View>
-              </View>
-            </View>
-          </React.Fragment>
-        ))}
-      </View>
-    ))}
-  </>
+            </React.Fragment>
+          ))}
+          {partIndex < question.questionContent.length - 1 && (
+            <View style={styles.questionBlankZone} />
+          )}
+        </React.Fragment>
+      ))}
+    </>
+  )
 );
 
 const MyDocument: React.FC = () => {
-  const groupedQuestions = groupQuestionsByCategoryAndAccount(questions);
+  const groupedQuestions = useMemo(
+    () => groupQuestionsByCategoryAndAccount(questions),
+    []
+  );
 
   return (
     <Document>
