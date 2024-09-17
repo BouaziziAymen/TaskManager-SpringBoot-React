@@ -9,7 +9,6 @@ import {
 } from "@react-pdf/renderer";
 import { categoryColors, questions } from "./questions";
 
-// Définir les types pour les questions et les questions regroupées
 interface Question {
   category: string;
   account: string;
@@ -28,7 +27,6 @@ interface GroupedQuestions {
   };
 }
 
-// Définir les styles en utilisant Flexbox
 const styles = StyleSheet.create({
   table: {
     display: "flex",
@@ -105,7 +103,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "left",
   },
-
   container: {
     marginTop: 20,
   },
@@ -129,28 +126,28 @@ const styles = StyleSheet.create({
     height: 30,
   },
   logoAndInfoWrapper: {
-    flexDirection: "row", // Align items horizontally
-    justifyContent: "space-between", // Space out logo and info box
-    alignItems: "flex-start", // Align items to the start of the container
-    width: "100%", // Ensure the wrapper uses the full width
-    marginBottom: 20, // Margin at the bottom to separate from the following content
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    width: "100%",
+    marginBottom: 20,
   },
   logo: {
-    width: 100, // Width of the logo, adjust as needed
-    height: 50, // Height of the logo, adjust as needed
+    width: 100,
+    height: 50,
     margin: 20,
   },
   infoBox: {
-    width: "30%", // Fixed width of 30%
+    width: "30%",
     padding: 10,
     border: "1px solid #bfbfbf",
     backgroundColor: "#ffffff",
     fontSize: 15,
-    textAlign: "left", // Align text to the right
+    textAlign: "left",
   },
   customBox: {
-    justifyContent: "center", // Center text vertically
-    alignItems: "center", // Center text horizontally
+    justifyContent: "center",
+    alignItems: "center",
     border: "1px solid #bfbfbf",
     backgroundColor: "#ffffff",
   },
@@ -160,7 +157,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Définir les composants de réponse personnalisés
 const ThreeBoxCustomResponse: React.FC = () => (
   <View style={styles.threeBoxResponse}>
     <View style={styles.responseBox}></View>
@@ -175,11 +171,8 @@ const CustomTextBox: React.FC<{ text: string }> = ({ text }) => (
   </View>
 );
 
-const EmptyCustomResponse: React.FC = () => (
-  <View /> // Composant de réponse personnalisable
-);
+const EmptyCustomResponse: React.FC = () => <View />;
 
-// Fonction d'aide pour regrouper les questions par catégorie et compte
 const groupQuestionsByCategoryAndAccount = (
   questions: Question[]
 ): GroupedQuestions => {
@@ -200,7 +193,6 @@ const groupQuestionsByCategoryAndAccount = (
   }, {} as GroupedQuestions);
 };
 
-// Méthode pour retourner le composant de réponse approprié en fonction des critères
 const getResponseComponent = (category: string) => {
   if (category === "Category 1") {
     return ThreeBoxCustomResponse;
@@ -213,9 +205,8 @@ const getResponseComponent = (category: string) => {
   }
 };
 
-// Composant pour rendre l'en-tête de catégorie
 const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
-  const backgroundColor = categoryColors[category] || "#ffffff"; // Couleur par défaut si non trouvée
+  const backgroundColor = categoryColors[category] || "#ffffff";
 
   return (
     <View style={[styles.tableRow, { backgroundColor }]}>
@@ -226,7 +217,6 @@ const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
   );
 };
 
-// Composant pour rendre l'en-tête de compte
 const AccountHeader: React.FC<{ account: string }> = ({ account }) => (
   <View style={styles.tableRow}>
     <Text
@@ -241,13 +231,11 @@ const AccountHeader: React.FC<{ account: string }> = ({ account }) => (
   </View>
 );
 
-// Définir un type pour le composant de réponse personnalisable
 interface QuestionRowProps {
   question: { questionContent: { parts: string[] }[] };
-  ResponseComponent: React.ComponentType; // Composant personnalisable pour les réponses
+  ResponseComponent: React.ComponentType;
 }
 
-// Composant pour rendre la ligne de question avec le composant de réponse personnalisable
 const QuestionRow: React.FC<QuestionRowProps> = ({
   question,
   ResponseComponent,
@@ -265,18 +253,15 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
               </View>
               <View style={styles.fullWidthCol}>
                 <View style={styles.partContainer}>
-                  <ResponseComponent />{" "}
-                  {/* Rendre le composant de réponse personnalisable */}
+                  <ResponseComponent />
                 </View>
               </View>
             </View>
-            {/* Zone blanche entre les parties */}
             {index < questionPart.parts.length - 1 && (
               <View style={styles.blankZone} />
             )}
           </React.Fragment>
         ))}
-        {/* Zone blanche plus grande entre les questions */}
         {partIndex < question.questionContent.length - 1 && (
           <View style={styles.questionBlankZone} />
         )}
@@ -286,7 +271,6 @@ const QuestionRow: React.FC<QuestionRowProps> = ({
 );
 
 const MyDocument: React.FC = () => {
-  // Regrouper les questions par catégorie et compte
   const groupedQuestions = groupQuestionsByCategoryAndAccount(questions);
 
   return (
@@ -295,15 +279,11 @@ const MyDocument: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.contentWrapper}>
             <View style={styles.logoAndInfoWrapper}>
-              <Image
-                src="logo192.png" // Chemin du logo
-                style={styles.logo} // Appliquer le style du logo
-              />
+              <Image src="logo192.png" style={styles.logo} />
               <View style={styles.infoBox}>
                 <Text>Info Line 1</Text>
                 <Text>Info Line 2</Text>
                 <Text>Info Line 3</Text>
-                {/* Ajouter plus de lignes si nécessaire */}
               </View>
             </View>
             <View style={styles.table}>
@@ -318,7 +298,7 @@ const MyDocument: React.FC = () => {
                           <View style={styles.questionContainer} key={index}>
                             <QuestionRow
                               question={question}
-                              ResponseComponent={getResponseComponent(category)} // Passer le composant de réponse personnalisable
+                              ResponseComponent={getResponseComponent(category)}
                             />
                           </View>
                         )
