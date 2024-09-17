@@ -36,10 +36,23 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     padding: 5,
-    fontSize: 12,
+    fontSize: 14, // Larger font size for headers
     fontWeight: "bold",
     borderBottomWidth: 1,
     borderBottomColor: "#bfbfbf",
+  },
+  categoryHeader: {
+    padding: 10,
+    fontSize: 18, // Largest font size for category headers
+    fontWeight: "bold",
+    backgroundColor: "#e0f7fa", // Light cyan for category headers
+  },
+  accountHeader: {
+    padding: 8,
+    fontSize: 16, // Slightly smaller font size for account headers
+    fontWeight: "bold",
+    backgroundColor: "#2196F3", // Blue background
+    color: "#ffffff", // White text color
   },
   questionContainer: {
     borderStyle: "solid",
@@ -49,12 +62,12 @@ const styles = StyleSheet.create({
     marginBottom: 30, // Larger margin for more space between questions
   },
   questionText: {
-    fontSize: 10,
+    fontSize: 12, // Slightly larger font size for question text
     flexWrap: "wrap",
     textAlign: "left",
   },
   responseText: {
-    fontSize: 10,
+    fontSize: 12, // Consistent font size with question text
     color: "#333",
   },
   blankZone: {
@@ -69,8 +82,26 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   partText: {
-    fontSize: 10,
+    fontSize: 12, // Consistent font size with question and response text
     textAlign: "left",
+  },
+  infoBox: {
+    width: "30%", // Fixed width of 30%
+    padding: 10,
+    border: "1px solid #bfbfbf",
+    backgroundColor: "#ffffff",
+    fontSize: 10,
+    alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  container: {
+    marginTop: 20, // Space between the top of the page and the container
+  },
+  contentWrapper: {
+    marginTop: 20, // Margin to push the table down
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end", // Align the content to the right
   },
 });
 
@@ -127,7 +158,9 @@ const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
 
   return (
     <View style={[styles.tableRow, { backgroundColor }]}>
-      <Text style={[styles.fullWidthCol, styles.tableHeader]}>{category}</Text>
+      <Text style={[styles.fullWidthCol, styles.categoryHeader]}>
+        {category}
+      </Text>
     </View>
   );
 };
@@ -135,7 +168,7 @@ const CategoryHeader: React.FC<{ category: string }> = ({ category }) => {
 // Component for rendering Account Header
 const AccountHeader: React.FC<{ account: string }> = ({ account }) => (
   <View style={styles.tableRow}>
-    <Text style={[styles.fullWidthCol, styles.tableHeader]}>{account}</Text>
+    <Text style={[styles.fullWidthCol, styles.accountHeader]}>{account}</Text>
   </View>
 );
 
@@ -182,24 +215,34 @@ const MyDocument: React.FC = () => {
   return (
     <Document>
       <Page size="A4">
-        <View style={styles.table}>
-          {Object.keys(groupedQuestions).map((category) => (
-            <View key={category}>
-              <CategoryHeader category={category} />
-              {Object.keys(groupedQuestions[category]).map((account) => (
-                <View key={account}>
-                  <AccountHeader account={account} />
-                  {groupedQuestions[category][account].map(
-                    (question, index) => (
-                      <View style={styles.questionContainer} key={index}>
-                        <QuestionRow question={question} />
-                      </View>
-                    )
-                  )}
+        <View style={styles.container}>
+          <View style={styles.contentWrapper}>
+            <View style={styles.infoBox}>
+              <Text>Info Line 1</Text>
+              <Text>Info Line 2</Text>
+              <Text>Info Line 3</Text>
+              {/* Add more lines as needed */}
+            </View>
+            <View style={styles.table}>
+              {Object.keys(groupedQuestions).map((category) => (
+                <View key={category}>
+                  <CategoryHeader category={category} />
+                  {Object.keys(groupedQuestions[category]).map((account) => (
+                    <View key={account}>
+                      <AccountHeader account={account} />
+                      {groupedQuestions[category][account].map(
+                        (question, index) => (
+                          <View style={styles.questionContainer} key={index}>
+                            <QuestionRow question={question} />
+                          </View>
+                        )
+                      )}
+                    </View>
+                  ))}
                 </View>
               ))}
             </View>
-          ))}
+          </View>
         </View>
       </Page>
     </Document>
